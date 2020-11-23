@@ -1,3 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
 .bar:hover {
-    fill:brown;
+    fill:deepskyblue;
 }
+
+#tooltip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    height: 50px;
+    padding: 2px;
+    font: 12px;
+    background: lightsteelblue;
+    box-shadow: 1px 1px 10px;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+h1{
+    padding-top:30px;
+}
+  .container {
+    margin:auto;
+      margin-top:20vh;
+      
+      width: 1200px;
+      height:800px;
+    
+    background-color: white;
+    align-content: center;
+  
+    flex-direction: column;
+   
+    align-self: center;
+   
+    box-shadow: 1px 1px 10px;
+}
+
+  body{
+    
+    
+    
+      background-color: slategrey; 
+     align-items:center;
+    justify-content: center;
+   
+    text-align: center;
+   
+
+  
+   
+  
+ 
+  }

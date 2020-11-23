@@ -10,15 +10,16 @@ req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status === 200) {
         const json = (JSON.parse(req.responseText));
         const dataset = json["data"]
-        const numbers = json["data"].map(x => x[1])
         const dates = (json["data"].map(x => x[0])).map(x => x.split("-"))
-        console.log(dates[0])
-        const w = 1200;
-        const h = 600;
+        const w = 1000, h = 600, barW = w / 275
+
         const padding = 100;
-        const xAxisDomain = d3.scaleLinear()
-            .domain(d3.extent(dates, d => d[0]))
-            .range([padding, w - padding]);
+        const yearsDate = dataset.map(x => new Date(x[0]))
+        const xMax = new Date(d3.max(yearsDate))
+
+        const xAxisDomain = d3.scaleTime()
+            .domain([d3.min(yearsDate), xMax])
+            .range([padding, w - padding])
 
         const xScale = d3.scaleLinear()
             .domain([0, dataset.length])
@@ -28,15 +29,34 @@ req.onreadystatechange = function () {
             .range([h - padding, padding])
 
 
-        const h1 = d3.select("body")
+        const svgContainer = d3.select('body')
+            .append("div")
+            .attr('class', 'container')
+            .attr("x", w + 100)
+            .attr('y', h + 100)
+
+        const tooltip = svgContainer
+            .append('div')
+            .attr('id', 'tooltip')
+            .style('opacity', 0);
+
+        const h1 = svgContainer
             .append("h1")
             .attr("id", "title")
-            .text("h1 tag here");
-        const svg = d3.select("body")
+            .text("US GDP from 1947 - 2015");
+
+        const svg = svgContainer
             .append("svg")
             .attr("width", w)
             .attr("height", h);
-        svg.selectAll("rect")
+
+
+        const monthToQ = {
+            "01": "Q1", "04": "Q2",
+            "07": "Q3", "10": "Q4",
+
+        }
+        const rect = svg.selectAll("rect")
             .data(dataset)
             .enter()
             .append("rect")
@@ -45,12 +65,31 @@ req.onreadystatechange = function () {
             .attr("data-gdp", (d, i) => d[1])
             .attr("x", (d, i) => xScale(i))
             .attr("y", (d, i) => yScale(d[1]))
-            .attr("width", "2")
+            .attr("width", barW)
             .attr("height", (d, i) => h - padding - yScale(d[1]))
-            .attr("fill", "navy")
-            .append("title")
-            .attr("id", "tooltip")
-            .text(d => d);
+            .attr("fill", "black")
+            .on('mouseover', function (d, i) {
+                const e = rect.nodes();
+                const o = e.indexOf(this);
+                const year = (i[0].split("-"))[0]
+                const month = (i[0].split("-"))[1]
+
+                tooltip.transition()
+                    .duration(0)
+                    .style('opacity', 0.9);
+
+                tooltip.html(
+                    year + " " + monthToQ[month] + '<br>' + '$' + i[1] + " Billion"
+                );
+                tooltip.attr('data-date', i[0])
+                    .style('left', xScale(o) + 300 + 'px')
+                    .style('top', h + 100 + 'px')
+                    .style('transform', 'translateX(60px)');
+            })
+            .on('mouseout', () => {
+                tooltip.transition().duration(200).style('opacity', 0)
+            })
+
 
         const xAxis = d3.axisBottom(xAxisDomain);
         const yAxis = d3.axisLeft(yScale);
