@@ -11,7 +11,7 @@ req.onreadystatechange = function () {
         const json = (JSON.parse(req.responseText));
         const dataset = json["data"]
         const dates = (json["data"].map(x => x[0])).map(x => x.split("-"))
-        const w = 1000, h = 600, barW = w / 275
+        const w = 1000, h = 560, barW = w / 275
 
         const padding = 100;
         const yearsDate = dataset.map(x => new Date(x[0]))
@@ -34,21 +34,37 @@ req.onreadystatechange = function () {
             .attr('class', 'container')
             .attr("x", w + 100)
             .attr('y', h + 100)
+            .attr("width", w)
+            .attr("height", h);
 
-        const tooltip = svgContainer
-            .append('div')
-            .attr('id', 'tooltip')
-            .style('opacity', 0);
+
 
         const h1 = svgContainer
             .append("h1")
             .attr("id", "title")
             .text("US GDP from 1947 - 2015");
 
+
         const svg = svgContainer
             .append("svg")
             .attr("width", w)
             .attr("height", h);
+        const tooltip = svgContainer
+            .append('div')
+            .attr('id', 'tooltip')
+            .style('opacity', 0);
+
+        const gdpText = svg.append('text')
+            .attr('id', 'gdp-text')
+            .attr('transform', 'rotate(-90)')
+            .attr("x", -300)
+            .attr('y', 150)
+            .text('Gross Domestic Product');
+        const moreInfo = svg.append('text')
+            .attr('id', 'more-info')
+            .attr("x", 500)
+            .attr('y', 550)
+            .text('More info here: http://www.just_example.com');
 
 
         const monthToQ = {
@@ -67,7 +83,7 @@ req.onreadystatechange = function () {
             .attr("y", (d, i) => yScale(d[1]))
             .attr("width", barW)
             .attr("height", (d, i) => h - padding - yScale(d[1]))
-            .attr("fill", "black")
+            .attr("fill", "#1E7BC6")
             .on('mouseover', function (d, i) {
                 const e = rect.nodes();
                 const o = e.indexOf(this);
@@ -82,8 +98,10 @@ req.onreadystatechange = function () {
                     year + " " + monthToQ[month] + '<br>' + '$' + i[1] + " Billion"
                 );
                 tooltip.attr('data-date', i[0])
-                    .style('left', xScale(o) + 300 + 'px')
-                    .style('top', h + 100 + 'px')
+                    .attr('x', xScale(o))
+                    .attr('y', 700)
+                    // .style('left', o * barW + 30 + 'px')
+                    // .style('top', 700 + 'px')
                     .style('transform', 'translateX(60px)');
             })
             .on('mouseout', () => {

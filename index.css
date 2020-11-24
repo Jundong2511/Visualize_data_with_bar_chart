@@ -4,14 +4,15 @@
   }
   
 .bar:hover {
-    fill:deepskyblue;
+   fill:darkorange;
 }
 
 #tooltip {
+
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     text-align: center;
     width: 150px;
     height: 50px;
