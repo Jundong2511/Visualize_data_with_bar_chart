@@ -20,15 +20,12 @@ req.onreadystatechange = function () {
         const xAxisDomain = d3.scaleTime()
             .domain([d3.min(yearsDate), xMax])
             .range([padding, w - padding])
-
         const xScale = d3.scaleLinear()
             .domain([0, dataset.length])
             .range([padding, w - padding]);
         const yScale = d3.scaleLinear()
             .domain([0, d3.max(dataset, d => d[1])])
             .range([h - padding, padding])
-
-
         const svgContainer = d3.select('body')
             .append("div")
             .attr('class', 'container')
@@ -36,24 +33,19 @@ req.onreadystatechange = function () {
             .attr('y', h + 100)
             .attr("width", w)
             .attr("height", h);
-
-
-
         const h1 = svgContainer
             .append("h1")
             .attr("id", "title")
             .text("US GDP from 1947 - 2015");
 
-
-        const svg = svgContainer
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h);
         const tooltip = svgContainer
             .append('div')
             .attr('id', 'tooltip')
             .style('opacity', 0);
-
+        const svg = svgContainer
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
         const gdpText = svg.append('text')
             .attr('id', 'gdp-text')
             .attr('transform', 'rotate(-90)')
@@ -65,12 +57,9 @@ req.onreadystatechange = function () {
             .attr("x", 500)
             .attr('y', 550)
             .text('More info here: http://www.just_example.com');
-
-
         const monthToQ = {
             "01": "Q1", "04": "Q2",
             "07": "Q3", "10": "Q4",
-
         }
         const rect = svg.selectAll("rect")
             .data(dataset)
@@ -98,17 +87,13 @@ req.onreadystatechange = function () {
                     year + " " + monthToQ[month] + '<br>' + '$' + i[1] + " Billion"
                 );
                 tooltip.attr('data-date', i[0])
-                    .attr('x', xScale(o))
-                    .attr('y', 700)
-                    // .style('left', o * barW + 30 + 'px')
-                    // .style('top', 700 + 'px')
+                    .style('left', o * 3 + 150 + 'px')
+                    .style('top', 300 + 'px')
                     .style('transform', 'translateX(60px)');
             })
             .on('mouseout', () => {
                 tooltip.transition().duration(200).style('opacity', 0)
             })
-
-
         const xAxis = d3.axisBottom(xAxisDomain);
         const yAxis = d3.axisLeft(yScale);
         svg.append("g")
@@ -119,17 +104,6 @@ req.onreadystatechange = function () {
             .attr("id", "y-axis")
             .attr("transform", "translate(" + padding + ",0)")
             .call(yAxis);
-
-
     }
 }
 req.send()
-
-
-
-
-
-
-// get obj from xmlhr, use time as x-axis, gdp as x-axis.
-
-

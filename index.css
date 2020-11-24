@@ -8,11 +8,10 @@
 }
 
 #tooltip {
-
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
+    position: absolute;
     text-align: center;
     width: 150px;
     height: 50px;
@@ -26,36 +25,22 @@
 h1{
     padding-top:30px;
 }
-  .container {
-    margin:auto;
-      margin-top:20vh;
-      
-      width: 1200px;
-      height:800px;
-    
+  .container { 
+    position: relative;
+    width: 1200px;
+    height:700px;
     background-color: white;
     align-content: center;
-  
     flex-direction: column;
-   
-    align-self: center;
-   
     box-shadow: 1px 1px 10px;
 }
 
   body{
-    
-    
-    
-      background-color: slategrey; 
-     align-items:center;
+    display:flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: slategrey; 
+    align-items:center;
     justify-content: center;
-   
-    text-align: center;
-   
-
-  
-   
-  
- 
+    text-align: center; 
   }
