@@ -73,23 +73,22 @@ req.onreadystatechange = function () {
             .attr("width", barW)
             .attr("height", (d, i) => h - padding - yScale(d[1]))
             .attr("fill", "#1E7BC6")
-            .on('mouseover', function (d, i) {
-                const e = rect.nodes();
-                const o = e.indexOf(this);
-                const year = (i[0].split("-"))[0]
-                const month = (i[0].split("-"))[1]
+            .on('mouseover', (event, d) => {
+                // const e = rect.nodes();
+                // const o = e.indexOf(this);
+                const year = (d[0].split("-"))[0]
+                const month = (d[0].split("-"))[1]
 
                 tooltip.transition()
                     .duration(0)
                     .style('opacity', 0.9);
 
                 tooltip.html(
-                    year + " " + monthToQ[month] + '<br>' + '$' + i[1] + " Billion"
+                    year + " " + monthToQ[month] + '<br>' + '$' + d[1] + " Billion"
                 );
-                tooltip.attr('data-date', i[0])
-                    .style('left', o * 3 + 150 + 'px')
-                    .style('top', 300 + 'px')
-                    .style('transform', 'translateX(60px)');
+                tooltip.attr('data-date', d[0])
+                    .style("left", event.pageX - 100 + "px")
+                    .style("top", 300 + "px");
             })
             .on('mouseout', () => {
                 tooltip.transition().duration(200).style('opacity', 0)
