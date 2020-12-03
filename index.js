@@ -72,7 +72,7 @@ req.onreadystatechange = function () {
             .attr("y", (d, i) => yScale(d[1]))
             .attr("width", barW)
             .attr("height", (d, i) => h - padding - yScale(d[1]))
-            .attr("fill", "#1E7BC6")
+            .attr("fill", "steelblue")
             .on('mouseover', (event, d) => {
                 // const e = rect.nodes();
                 // const o = e.indexOf(this);
@@ -87,8 +87,8 @@ req.onreadystatechange = function () {
                     year + " " + monthToQ[month] + '<br>' + '$' + d[1] + " Billion"
                 );
                 tooltip.attr('data-date', d[0])
-                    .style("left", event.pageX - 100 + "px")
-                    .style("top", 300 + "px");
+                    .style("left", (event.pageX + 50) + "px")
+                    .style("top", (event.pageY - 50) + "px");
             })
             .on('mouseout', () => {
                 tooltip.transition().duration(200).style('opacity', 0)
